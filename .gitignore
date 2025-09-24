@@ -1,0 +1,26 @@
+# Gradle files
+**/build/
+!src/**/build/
+.gradle
+
+# IDEA project files
+.idea/
+.idea_modules/
+out/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse project files
+.settings/
+bin/
+tmp/
+.metadata
+.project
+
+# project files
+bot-token.txt
+channels.txt
+rb-channels.txt
+events-channels.txt
+deploy.sh
