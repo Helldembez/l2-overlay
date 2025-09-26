@@ -9,34 +9,42 @@ import javafx.scene.image.ImageView
 import javafx.util.Duration
 
 val SK_MANA_SUSPENSION = Skill(SkillName.MANA_SUSPENSION, 360, Images.MANA_SUSPENSION)
-val SK_SUBLIME = Skill(SkillName.SUBLIME,600, Images.SUBLIME)
-val SK_DOD = Skill(SkillName.DOD,1800, Images.DOD)
-val SK_SOF = Skill(SkillName.SOF,600, Images.SOF)
-val SK_FOI = Skill(SkillName.FOI,600, Images.FOI)
+val SK_SUBLIME = Skill(SkillName.SUBLIME, 1200, Images.SUBLIME)
+val SK_DOD = Skill(SkillName.DOD, 1800, Images.DOD)
+val SK_SOF = Skill(SkillName.SOF, 600, Images.SOF)
+val SK_FOI = Skill(SkillName.FOI, 1800, Images.FOI)
+val SK_MASS_CLEANSE = Skill(SkillName.MASS_CLEANSE, 1200, Images.MASS_CLEANSE)
+val SK_TREE = Skill(SkillName.MASS_CLEANSE, 600, Images.TREE)
 
 enum class SkillName {
     MANA_SUSPENSION,
     SUBLIME,
     DOD,
     SOF,
-    FOI;
+    FOI,
+    MASS_CLEANSE,
+    TREE;
 
     fun imageForName() =
-        when(this) {
+        when (this) {
             MANA_SUSPENSION -> Images.MANA_SUSPENSION
             SUBLIME -> Images.SUBLIME
             DOD -> Images.DOD
             SOF -> Images.SOF
             FOI -> Images.FOI
+            MASS_CLEANSE -> Images.MASS_CLEANSE
+            TREE -> Images.TREE
         }
 
     fun skillForName() =
-        when(this) {
+        when (this) {
             MANA_SUSPENSION -> SK_MANA_SUSPENSION
             SUBLIME -> SK_SUBLIME
             DOD -> SK_DOD
             SOF -> SK_SOF
             FOI -> SK_FOI
+            MASS_CLEANSE -> SK_MASS_CLEANSE
+            TREE -> SK_TREE
         }
 }
 
@@ -58,8 +66,7 @@ data class Skill(
                         val durationInSeconds = Duration.seconds(remaining.toDouble())
                         if (remaining > 60) {
                             counter.text = "${durationInSeconds.toMinutes().toInt()}m"
-                        }
-                        else {
+                        } else {
                             counter.text = "${remaining}s"
                         }
                     } else {

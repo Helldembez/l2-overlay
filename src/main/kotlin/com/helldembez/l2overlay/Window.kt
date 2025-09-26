@@ -84,7 +84,7 @@ class CooldownOverlay : Application(), NativeKeyListener {
         GlobalScreen.addNativeKeyListener(this)
     }
 
-    override fun nativeKeyPressed(e: NativeKeyEvent) { }
+    override fun nativeKeyPressed(e: NativeKeyEvent) {}
     override fun nativeKeyReleased(e: NativeKeyEvent?) {}
     override fun nativeKeyTyped(e: NativeKeyEvent?) {}
 }

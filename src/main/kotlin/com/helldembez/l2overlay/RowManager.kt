@@ -1,8 +1,8 @@
 package com.helldembez.l2overlay
 
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.geometry.Pos
 import javafx.scene.control.Button
-import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
@@ -10,80 +10,107 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.Text
+import javafx.stage.Stage
 
 
 class RowManager() {
     val rows = mutableMapOf<PartyRow, SettingsRow>()
+    var selectedSkill = SkillName.MANA_SUSPENSION
+    var selectedColor = Color.LIMEGREEN
+    private val maxLabelWidth = SimpleDoubleProperty(0.0)
+    val labels = mutableListOf<Text>()
 
     fun resetAll() {
-        rows.forEach { (it, _) ->it.skills.forEach { (_, skill) -> skill.skill.reset(skill.counter, skill.imageView) }}
+        rows.forEach { (it, _) -> it.skills.forEach { skill -> skill.skill.reset(skill.counter, skill.imageView) } }
     }
 
     fun initializeSettingsRows(settingsRoot: VBox, windowRoot: VBox) {
-        settingsRoot.children.addAll(rows.map { (partyRow, settingsRow)  ->
-            settingsRow.init(settingsRoot, windowRoot, partyRow, rows).row
+        settingsRoot.children.addAll(rows.map { (partyRow, settingsRow) ->
+            settingsRow.init(settingsRoot, windowRoot, partyRow, this).row
         })
     }
 
     fun addRow(settingsRoot: VBox, windowRoot: VBox) {
         val partyRow = createPartyRow()
-        val settingsRow = createSettingsRow(partyRow).init(settingsRoot, windowRoot, partyRow, rows)
-        rows.put(partyRow, settingsRow)
+        val settingsRow = createSettingsRow(partyRow, settingsRoot).init(settingsRoot, windowRoot, partyRow, this)
+        rows[partyRow] = settingsRow
         settingsRoot.children.add(settingsRow.row)
         windowRoot.children.add(partyRow.row)
     }
 
-    private fun createSettingsRow(row: PartyRow): SettingsRow {
+    private fun createSettingsRow(row: PartyRow, settingsRoot: VBox): SettingsRow {
         val text = TextField().apply {
             promptText = "Cp leader"
             text = row.text.text
         }
-
-        val skills = SkillName.entries.flatMap { skillName ->
-            val cb = CheckBox()
-            cb.apply {
-                setOnAction {
-                    row.skills[skillName]?.skillBtn?.isVisible = isSelected
+        val skills = HBox(5.0).apply {}
+        val addSkill = Button("+").apply {
+            setOnAction {
+                val skillName = selectedSkill
+                val uiSkill = createUISkill(skillName)
+                row.skills.add(uiSkill)
+                row.skillsBox.children.add(uiSkill.skillBtn)
+                val imageView = ImageView(selectedSkill.imageForName()).apply {
+                    isPreserveRatio = true
+                    fitWidth = 24.0
+                    setOnMouseEntered {
+                        image = Images.CROSS
+                    }
+                    setOnMouseExited {
+                        image = skillName.imageForName()
+                    }
+                    setOnMouseClicked {
+                        skills.children.remove(this)
+                        row.skills.remove(uiSkill)
+                        row.skillsBox.children.remove(uiSkill.skillBtn)
+                        settingsRoot.refresh()
+                    }
                 }
+                skills.children.add(imageView)
+                settingsRoot.refresh()
             }
-            val imageView = ImageView(skillName.imageForName()).apply {
-                isPreserveRatio = true;
-                fitWidth = 24.0
-            }
-            listOf(cb, imageView)
         }
 
         val removeBtn = Button("-")
-        val hbox =  HBox(10.0,text, *skills.toTypedArray(), removeBtn).apply {
+        val hbox = HBox(10.0, text, addSkill, skills, removeBtn).apply {
             alignment = Pos.CENTER_LEFT
         }
 
         return SettingsRow(hbox, text, removeBtn)
     }
 
-    private fun createPartyRow() : PartyRow {
+    private fun createPartyRow(): PartyRow {
         val text = Text().apply {
             font = Font.font(18.0)
-            fill = Color.LIMEGREEN
+            fill = selectedColor
+        }
+        labels += text
+        text.textProperty().addListener { _, _, _ -> recompute() }
+
+        val wrapper = HBox(text).apply {
+            minWidthProperty().bind(maxLabelWidth)
+            prefWidthProperty().bind(maxLabelWidth)
         }
 
-        val skills = SkillName.entries.associateWith { skillName -> createUISkill(skillName) }
-        val skillButtons = skills.map { (_, uiSkill) -> uiSkill.skillBtn }
+        val skills = HBox(5.0).apply {}
 
-        val row = HBox(10.0, text, *skillButtons.toTypedArray()).apply {
+        val row = HBox(10.0, wrapper, skills).apply {
             alignment = Pos.CENTER_LEFT
+            HBox.setHgrow(skills, Priority.ALWAYS) // skills can take remaining space
         }
-        return PartyRow(text, skills, row)
+
+        return PartyRow(text, mutableListOf(), skills, row)
     }
 
     private fun createUISkill(skillName: SkillName): PartyRow.UISkill {
         val imageView = ImageView(skillName.imageForName()).apply {
-            isPreserveRatio = true;
+            isPreserveRatio = true
             fitWidth = 24.0
         }
         val counter = Label().apply {
@@ -109,8 +136,22 @@ class RowManager() {
             }
             style = "-fx-background-color: transparent; -fx-padding: 0;"
         }
-        skillButton.isVisible = false
         return PartyRow.UISkill(skill, skillButton, counter, imageView)
+    }
+
+    private fun recompute() {
+        var max = 0.0
+        labels.forEach { t ->
+            t.applyCss()
+            val w = t.layoutBounds.width
+            if (w > max) max = w
+        }
+        maxLabelWidth.set(max)
+    }
+
+    fun remove(text: Text) {
+        labels.remove(text)
+        recompute()
     }
 
     fun refresh() {
@@ -123,7 +164,8 @@ class RowManager() {
 
 data class PartyRow(
     val text: Text,
-    val skills: Map<SkillName, UISkill>,
+    val skills: MutableList<UISkill>,
+    val skillsBox: HBox,
     val row: HBox,
 ) {
     data class UISkill(
@@ -139,14 +181,19 @@ data class SettingsRow(
     val text: TextField,
     val removeBtn: Button,
 ) {
-    fun init(settingsRoot: VBox, windowRoot: VBox, partyRow: PartyRow, rows: MutableMap<PartyRow, SettingsRow>): SettingsRow {
+    fun init(settingsRoot: VBox, windowRoot: VBox, partyRow: PartyRow, rowManager: RowManager): SettingsRow {
         removeBtn.apply {
             setOnAction {
                 settingsRoot.children.remove(row)
                 windowRoot.children.remove(partyRow.row)
-                rows.remove(partyRow)
+                rowManager.rows.remove(partyRow)
+                rowManager.remove(partyRow.text)
             }
         }
         return this
     }
+}
+
+fun VBox.refresh() {
+    (scene.window as? Stage)?.sizeToScene()
 }
