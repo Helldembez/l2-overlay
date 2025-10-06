@@ -14,7 +14,12 @@ val SK_DOD = Skill(SkillName.DOD, 1800, Images.DOD)
 val SK_SOF = Skill(SkillName.SOF, 600, Images.SOF)
 val SK_FOI = Skill(SkillName.FOI, 1800, Images.FOI)
 val SK_MASS_CLEANSE = Skill(SkillName.MASS_CLEANSE, 1200, Images.MASS_CLEANSE)
-val SK_TREE = Skill(SkillName.MASS_CLEANSE, 600, Images.TREE)
+val SK_TREE = Skill(SkillName.MASS_CLEANSE, 60, Images.TREE)
+val SK_SOS = Skill(SkillName.SOS, 150, Images.SOS)
+val SK_FI = Skill(SkillName.FI, 150, Images.FI)
+val SK_VALOR = Skill(SkillName.FI, 900, Images.VALOR)
+val SK_GRANDEUR = Skill(SkillName.FI, 900, Images.GRANDEUR)
+val SK_DREAD = Skill(SkillName.FI, 900, Images.DREAD)
 
 enum class SkillName {
     MANA_SUSPENSION,
@@ -23,7 +28,12 @@ enum class SkillName {
     SOF,
     FOI,
     MASS_CLEANSE,
-    TREE;
+    TREE,
+    SOS,
+    FI,
+    VALOR,
+    GRANDEUR,
+    DREAD;
 
     fun imageForName() =
         when (this) {
@@ -34,6 +44,11 @@ enum class SkillName {
             FOI -> Images.FOI
             MASS_CLEANSE -> Images.MASS_CLEANSE
             TREE -> Images.TREE
+            SOS -> Images.SOS
+            FI -> Images.FI
+            VALOR -> Images.VALOR
+            GRANDEUR -> Images.GRANDEUR
+            DREAD -> Images.DREAD
         }
 
     fun skillForName() =
@@ -45,6 +60,11 @@ enum class SkillName {
             FOI -> SK_FOI
             MASS_CLEANSE -> SK_MASS_CLEANSE
             TREE -> SK_TREE
+            SOS -> SK_SOS
+            FI -> SK_FI
+            VALOR -> SK_VALOR
+            GRANDEUR -> SK_GRANDEUR
+            DREAD -> SK_DREAD
         }
 }
 

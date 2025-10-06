@@ -10,5 +10,10 @@ object Images {
     val FOI = Image(javaClass.getResource("/foi.png")!!.toExternalForm())
     val MASS_CLEANSE = Image(javaClass.getResource("/mass_cleanse.png")!!.toExternalForm())
     val TREE = Image(javaClass.getResource("/tree.png")!!.toExternalForm())
+    val SOS = Image(javaClass.getResource("/sos.png")!!.toExternalForm())
+    val FI = Image(javaClass.getResource("/fi.png")!!.toExternalForm())
+    val VALOR = Image(javaClass.getResource("/valor.png")!!.toExternalForm())
+    val GRANDEUR = Image(javaClass.getResource("/grandeur.png")!!.toExternalForm())
+    val DREAD = Image(javaClass.getResource("/dread.png")!!.toExternalForm())
     val CROSS = Image(javaClass.getResource("/cross.png")!!.toExternalForm())
 }
