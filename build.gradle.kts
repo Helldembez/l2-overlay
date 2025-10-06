@@ -21,7 +21,7 @@ buildscript {
 }
 
 group = "com.helldembez.l2overlay"
-version = "0.2"
+version = "0.3"
 
 repositories {
     mavenCentral()
