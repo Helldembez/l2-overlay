@@ -21,7 +21,7 @@ buildscript {
 }
 
 group = "com.helldembez.l2overlay"
-version = "0.3"
+version = "0.4"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    val javaFxVersion = "20.0.2"
+    val javaFxVersion = "21.0.2"
     implementation("org.openjfx:javafx-base:$javaFxVersion:win")
     implementation("org.openjfx:javafx-controls:$javaFxVersion:win")
     implementation("org.openjfx:javafx-graphics:$javaFxVersion:win")

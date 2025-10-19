@@ -11,20 +11,28 @@ import javafx.util.Duration
 val SK_MANA_SUSPENSION = Skill(SkillName.MANA_SUSPENSION, 360, Images.MANA_SUSPENSION)
 val SK_SUBLIME = Skill(SkillName.SUBLIME, 1200, Images.SUBLIME)
 val SK_DOD = Skill(SkillName.DOD, 1800, Images.DOD)
+val SK_SYM_ATK = Skill(SkillName.SYM_ATK, 1800, Images.SYM_ATK)
+val SK_SYM_DEF = Skill(SkillName.SYM_DEF, 1800, Images.SYM_DEF)
+val SK_SYM_BOW = Skill(SkillName.SYM_BOW, 1800, Images.SYM_BOW)
+val SK_SYM_NOISE = Skill(SkillName.SYM_NOISE, 1800, Images.SYM_NOISE)
 val SK_SOF = Skill(SkillName.SOF, 600, Images.SOF)
 val SK_FOI = Skill(SkillName.FOI, 1800, Images.FOI)
 val SK_MASS_CLEANSE = Skill(SkillName.MASS_CLEANSE, 1200, Images.MASS_CLEANSE)
-val SK_TREE = Skill(SkillName.MASS_CLEANSE, 60, Images.TREE)
+val SK_TREE = Skill(SkillName.TREE, 60, Images.TREE)
 val SK_SOS = Skill(SkillName.SOS, 150, Images.SOS)
 val SK_FI = Skill(SkillName.FI, 150, Images.FI)
-val SK_VALOR = Skill(SkillName.FI, 900, Images.VALOR)
-val SK_GRANDEUR = Skill(SkillName.FI, 900, Images.GRANDEUR)
-val SK_DREAD = Skill(SkillName.FI, 900, Images.DREAD)
+val SK_VALOR = Skill(SkillName.VALOR, 900, Images.VALOR)
+val SK_GRANDEUR = Skill(SkillName.GRANDEUR, 900, Images.GRANDEUR)
+val SK_DREAD = Skill(SkillName.DREAD, 900, Images.DREAD)
 
 enum class SkillName {
     MANA_SUSPENSION,
     SUBLIME,
     DOD,
+    SYM_ATK,
+    SYM_DEF,
+    SYM_BOW,
+    SYM_NOISE,
     SOF,
     FOI,
     MASS_CLEANSE,
@@ -40,6 +48,10 @@ enum class SkillName {
             MANA_SUSPENSION -> Images.MANA_SUSPENSION
             SUBLIME -> Images.SUBLIME
             DOD -> Images.DOD
+            SYM_ATK -> Images.SYM_ATK
+            SYM_DEF -> Images.SYM_DEF
+            SYM_BOW -> Images.SYM_BOW
+            SYM_NOISE -> Images.SYM_NOISE
             SOF -> Images.SOF
             FOI -> Images.FOI
             MASS_CLEANSE -> Images.MASS_CLEANSE
@@ -56,6 +68,10 @@ enum class SkillName {
             MANA_SUSPENSION -> SK_MANA_SUSPENSION
             SUBLIME -> SK_SUBLIME
             DOD -> SK_DOD
+            SYM_ATK -> SK_SYM_ATK
+            SYM_DEF -> SK_SYM_DEF
+            SYM_BOW -> SK_SYM_BOW
+            SYM_NOISE -> SK_SYM_NOISE
             SOF -> SK_SOF
             FOI -> SK_FOI
             MASS_CLEANSE -> SK_MASS_CLEANSE
